@@ -15,6 +15,10 @@ router.route("/profile/:id")
 router.route("/posts")
       .get(getController.fetchPost)
 
+// fetch post base on user profile by ID
+router.route("/profile/post/:id")
+      .get(getController.fetchPostBaseOnUser)
+
 // Page not found!
 router.route("*")
       .get(pageNotFound.error)
