@@ -19,6 +19,7 @@ router.route("/posts")
 router.route("/profile/post/:id")
       .get(getController.fetchPostBaseOnUser)
 
+
 // Page not found!
 router.route("*")
       .get(pageNotFound.error)

@@ -36,11 +36,12 @@ const getController = {
 		}
 	},
 	fetchPostBaseOnUser: async (req,res) => {
-		const myId = await Post.findOne({ userId: req.params.id });
+		const myId = await Post.find({ userId: req.params.id }).sort({ createdAt: -1});
 		if(!myId) return res.status(403).send("Empty!");
 
 		return res.status(200).send(myId);
-	}
+	},
+
 }
 
 module.exports = getController;

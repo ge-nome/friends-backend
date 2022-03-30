@@ -27,3 +27,6 @@ GET USER PROFILE
 	https://friendsapp-api.herokuapp.com/profile/:id
 
 WHERE (id) IS DYNAMIC
+
+#CHAT ROUTE
+https://real-time-api.herokuapp.com/
