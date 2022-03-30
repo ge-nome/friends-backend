@@ -16,10 +16,8 @@ const postController = {
 			const pass = await bcrypt.compare(p,user.password);
 			if(!pass) return res.status(403).send("Email or password is not correct!");
 			
-			// const token = jwt.sign(user,process.env.SC,{ expiresIn: "1h"});
-			// return console.log(token);
-			// return res.status(200).send(token);
-			return res.status(200).send(user)
+			return res.status(200).send(user);
+
 		} catch(error){
 			return res.status(501).send(error);
 		}
@@ -68,7 +66,7 @@ const postController = {
 				username: userInfo.username,
 				profileImage: userInfo.profileImage,
 				message: req.body.message,
-				message: "Test testing"
+				emoji: req.body.emoji
 			})
 			 .save()
 			 .then(data => {

@@ -14,7 +14,11 @@ const PostSchema = new Schema({
      },
      message: {
      	type: String
+     },
+     emoji: {
+          type: String
      }    	
 },{ timestamp: true });
+
 
 module.exports = mongoose.model("Post",PostSchema);
