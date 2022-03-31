@@ -19,6 +19,14 @@ router.route("/posts")
 router.route("/profile/post/:id")
       .get(getController.fetchPostBaseOnUser)
 
+// fetch a user conversation
+router.route("/conversation/:id")
+      .get(getController.fetchUserConversation)
+
+
+// fetch a user messages
+router.route("/message/:id")
+      .get(getController.fetchUserMessages)
 
 // Page not found!
 router.route("*")

@@ -10,6 +10,14 @@ router.route("/log/auth")
 router.route("/create/user/auth")
       .post(postController.createAcount)
 
+// create a conversation
+router.route("/conversation")
+      .post(postController.createNewConversation)
+
+// save messages into the database route
+router.route("/log/message")
+      .post(postController.saveUserChats)
+
 // Post Route
 router.route("/post/user/:id")
       .post(postController.userPost)

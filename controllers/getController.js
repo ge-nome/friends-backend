@@ -1,5 +1,7 @@
 const User = require("../model/User");
 const Post = require("../model/Post");
+const Conversation = require("../model/Conversation");
+const Message = require("../model/Message");
 
 const getController = {
 	// Users On the platform
@@ -41,6 +43,35 @@ const getController = {
 
 		return res.status(200).send(myId);
 	},
+	// fetch user conversation
+	fetchUserConversation: async (req,res) => {
+		try{
+			await Conversation.find({
+				members: {$in: [req.params.id]}
+			})
+			 .then(data => {
+			 	return res.status(200).send(data)
+			 })
+			 .catch(error => {
+			 	return res.status(403).send(error)
+			 })
+		} catch(error){
+			return res.status(503).send(error)
+		}
+	},
+	// fetch user messages
+	fetchUserMessages: async (req,res) => {
+		try{
+			const messages = await Message.find({
+				conversationId: req.params.id
+			})
+			if(!messages) return res.status(403).send("Message not found!");
+			
+			return res.status(200).send(messages);
+		} catch(error){
+			return res.status(503).send(error)
+		}
+	}
 
 }
 

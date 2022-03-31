@@ -1,5 +1,7 @@
 const User = require("../model/User");
 const Post = require("../model/Post");
+const Conversation = require("../model/Conversation")
+const Message = require("../model/Message")
 const bcrypt = require("bcrypt");
 
 const postController = {
@@ -80,7 +82,42 @@ const postController = {
 		} catch(error){
 			return res.status(503).send(error);
 		}
-	}
+	},
+	// create a new conversation
+	createNewConversation: async (req,res) => {
+		try{
+			const findMyId = await Conversation.findOne({ members: [req.body.myId,req.body.yourId]});
+			if(findMyId) return res.status(200).send(findMyId);
+
+			await new Conversation({
+				members: [req.body.myId,req.body.yourId]
+			})
+			  .save()
+			  .then(data => {
+			  	return res.status(200).send(data)
+			  })
+			  .catch(error => {
+			  	return res.status(403).send(error)
+			  })
+		} catch(error){
+			return res.status(503).send(error)
+		}
+	},
+	 //Save messages in the database
+	 saveUserChats: async (req,res) => {
+	 	try{
+	 		await new Message(req.body)
+	 	     .save()
+	 	     .then(data => {
+	 	     	return res.status(200).send(data)
+	 	     })
+	 	     .catch(error => {
+	 	     	return res.status(403).send(error)
+	 	     })
+	 	} catch(error){
+	 		return res.status(503).send(error)
+	 	}
+	 } 
 }
 
 module.exports = postController;
