@@ -37,6 +37,7 @@ const getController = {
 			return res.status(503).send(error);
 		}
 	},
+	// fetch post base on user profile
 	fetchPostBaseOnUser: async (req,res) => {
 		const myId = await Post.find({ userId: req.params.id }).sort({ createdAt: -1});
 		if(!myId) return res.status(403).send("Empty!");
@@ -65,7 +66,7 @@ const getController = {
 			const messages = await Message.find({
 				conversationId: req.params.id
 			})
-			if(!messages) return res.status(403).send("Message not found!");
+			// if(!messages) return res.status(403).send("Message not found!");
 			
 			return res.status(200).send(messages);
 		} catch(error){

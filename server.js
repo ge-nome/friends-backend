@@ -7,6 +7,7 @@ const cors = require("cors");
 const PORT = process.env.PORT || 4000;
 const app = express();
 
+//mongoose.connect("mongodb://localhost/Friends-App")
 mongoose.connect(process.env.MONGO_URI)
    .then(() => console.log("Database connected!"))
    .catch(error => console.log(error))

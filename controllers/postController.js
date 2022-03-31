@@ -3,6 +3,7 @@ const Post = require("../model/Post");
 const Conversation = require("../model/Conversation")
 const Message = require("../model/Message")
 const bcrypt = require("bcrypt");
+const mongoose = require("mongoose");
 
 const postController = {
 	logAuth: async (req,res) => {
@@ -86,11 +87,18 @@ const postController = {
 	// create a new conversation
 	createNewConversation: async (req,res) => {
 		try{
-			const findMyId = await Conversation.findOne({ members: [req.body.myId,req.body.yourId]});
-			if(findMyId) return res.status(200).send(findMyId);
+			const query = [mongoose.Types.ObjectId(req.body.myId),mongoose.Types.ObjectId(req.body.yourId)];
+			
+			const findMyId = await Conversation.findOne({ 
+			  $and:  [{ members: req.body.myId},{ members: req.body.yourId}]
+			});
+			if(findMyId){
+				// console.log("Not");
+				return res.status(200).send(findMyId);
+			}
 
 			await new Conversation({
-				members: [req.body.myId,req.body.yourId]
+				members: query
 			})
 			  .save()
 			  .then(data => {
@@ -105,6 +113,7 @@ const postController = {
 	},
 	 //Save messages in the database
 	 saveUserChats: async (req,res) => {
+	 	if(!req.body) return res.status(403).send("Invalid!");
 	 	try{
 	 		await new Message(req.body)
 	 	     .save()
@@ -114,6 +123,11 @@ const postController = {
 	 	     .catch(error => {
 	 	     	return res.status(403).send(error)
 	 	     })
+	 	     await new Message.findOneAndUpdate(req.body.conversationId,{
+	 	     	lastMessage: req.body.text
+	 	     })
+	 	      .then(data => res.sendStatus(200))
+	 	      .catch(error => res.sendStatus(403))
 	 	} catch(error){
 	 		return res.status(503).send(error)
 	 	}

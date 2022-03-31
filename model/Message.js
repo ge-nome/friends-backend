@@ -2,13 +2,23 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 const MessageSchema = new Schema({
 	conversationId: {
-		type: String
+		type: mongoose.Schema.Types.ObjectId,
+		ref: "Conversation"
 	},
 	senderId: {
-		type: String
+		type: mongoose.Schema.Types.ObjectId,
+		ref: "User"
+	},
+	recieverId: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: "User"
 	},
 	text: {
 		type: String
+	},
+	lastMessage: {
+		type: String,
+		default: ""
 	}
 },{ timestamps: true })
 
