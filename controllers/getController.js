@@ -49,7 +49,8 @@ const getController = {
 		try{
 			await Conversation.find({
 				members: {$in: [req.params.id]}
-			})
+			}).sort({ createdAt: -1 })
+			 .populate("members")
 			 .then(data => {
 			 	return res.status(200).send(data)
 			 })

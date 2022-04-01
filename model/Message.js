@@ -15,10 +15,6 @@ const MessageSchema = new Schema({
 	},
 	text: {
 		type: String
-	},
-	lastMessage: {
-		type: String,
-		default: ""
 	}
 },{ timestamps: true })
 

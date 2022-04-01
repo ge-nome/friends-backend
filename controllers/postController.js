@@ -113,25 +113,34 @@ const postController = {
 	},
 	 //Save messages in the database
 	 saveUserChats: async (req,res) => {
-	 	if(!req.body) return res.status(403).send("Invalid!");
 	 	try{
-	 		await new Message(req.body)
+			// const query = ;
+
+	 		await new Message({
+	 			conversationId: mongoose.Types.ObjectId(req.body.conversationId),
+	 			senderId: mongoose.Types.ObjectId(req.body.senderId),
+	 			recieverId: mongoose.Types.ObjectId(req.body.recieverId),
+	 			text: req.body.text
+	 		})
 	 	     .save()
 	 	     .then(data => {
-	 	     	return res.status(200).send(data)
+	 	     	Conversation.findOneAndUpdate({ _id: req.body.conversationId},{
+	 	     		lastMessage: req.body.text
+	 	     	})
+	 	     	 .then(data => {
+	 	     	 	return res.status(200).send(data)
+	 	     	 })
+	 	     	  .catch(error => {
+	 	     	  	return res.status(403).send(error)
+	 	     	  })
 	 	     })
 	 	     .catch(error => {
 	 	     	return res.status(403).send(error)
 	 	     })
-	 	     await new Message.findOneAndUpdate(req.body.conversationId,{
-	 	     	lastMessage: req.body.text
-	 	     })
-	 	      .then(data => res.sendStatus(200))
-	 	      .catch(error => res.sendStatus(403))
 	 	} catch(error){
 	 		return res.status(503).send(error)
 	 	}
-	 } 
+	 }
 }
 
 module.exports = postController;
